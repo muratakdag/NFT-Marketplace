@@ -21,3 +21,27 @@ dfx deploy --argument='("CryptoDunks #123", principal "gbdev-tyqsv-hnvqv-7mgz4-4
 4. Head to localhost
 
 http://localhost:8080/
+
+# Minter Else HTML
+
+```
+ <div className="minter-container">
+        <h3 className="Typography-root makeStyles-title-99 Typography-h3 form-Typography-gutterBottom">
+          Minted!
+        </h3>
+        <div className="horizontal-center">
+        </div>
+      </div>
+
+```
+
+# Loader HTML
+
+```
+<div className="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+```
