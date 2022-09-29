@@ -53583,20 +53583,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Header */ "./src/opend_assets/src/components/Header.jsx");
 /* harmony import */ var _Footer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Footer */ "./src/opend_assets/src/components/Footer.jsx");
 /* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ "./node_modules/bootstrap/dist/css/bootstrap.min.css");
-/* harmony import */ var _Minter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Minter */ "./src/opend_assets/src/components/Minter.jsx");
-
 
 
 
 
 function App() {
-    const NFTID = "rrkah-fqaaa-aaaaa-aaaaq-cai";
+    // const NFTID = "rrkah-fqaaa-aaaaa-aaaaq-cai";
     return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "App" },
         react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Header__WEBPACK_IMPORTED_MODULE_1__["default"], null),
-        react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Minter__WEBPACK_IMPORTED_MODULE_4__["default"], null),
         react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Footer__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+
+
+/***/ }),
+
+/***/ "./src/opend_assets/src/components/Button.jsx":
+/*!****************************************************!*\
+  !*** ./src/opend_assets/src/components/Button.jsx ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+function Button(props) {
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "Chip-root makeStyles-chipBlue-108 Chip-clickable" },
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", { onClick: props.handleClick, className: "form-Chip-label" }, props.text)));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Button);
 
 
 /***/ }),
@@ -53654,21 +53673,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Gallery(props) {
-    const [items, setItems] = useState();
-    function fetchImages() {
+    const [items, setItems] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+    function fetchNFTs() {
         if (props.ids != undefined) {
-            setItems(props.ids.map((id) => (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Item__WEBPACK_IMPORTED_MODULE_1__["default"], { nftPrincipal: id, key: id.toText(), role: props.role }))));
+            setItems(props.ids.map((NFTId) => react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Item__WEBPACK_IMPORTED_MODULE_1__["default"], { id: NFTId, key: NFTId.toText() })));
         }
     }
-    useEffect(() => {
-        fetchImages();
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        fetchNFTs();
     }, []);
     return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "gallery-view" },
-        react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", { className: "makeStyles-title-99 Typography-h3" }, "Discover"),
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", { className: "makeStyles-title-99 Typography-h3" }, props.title),
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disGrid-root disGrid-container disGrid-spacing-xs-2" },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disGrid-root disGrid-item disGrid-grid-xs-12" },
-                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disGrid-root disGrid-container disGrid-spacing-xs-5 disGrid-justify-content-xs-center" }),
-                items))));
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disGrid-root disGrid-container disGrid-spacing-xs-5 disGrid-justify-content-xs-center" }, items)))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Gallery);
 
@@ -53688,12 +53706,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _assets_logo_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets/logo.png */ "./src/opend_assets/assets/logo.png");
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../index */ "./src/opend_assets/src/index.jsx");
-/* harmony import */ var _Gallery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Gallery */ "./src/opend_assets/src/components/Gallery.jsx");
-/* harmony import */ var _Minter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Minter */ "./src/opend_assets/src/components/Minter.jsx");
+/* harmony import */ var _assets_home_img_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/home-img.png */ "./src/opend_assets/assets/home-img.png");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _Minter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Minter */ "./src/opend_assets/src/components/Minter.jsx");
+/* harmony import */ var _Gallery__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Gallery */ "./src/opend_assets/src/components/Gallery.jsx");
 /* harmony import */ var _declarations_opend__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../declarations/opend */ "./src/declarations/opend/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../index */ "./src/opend_assets/src/index.jsx");
+
 
 
 
@@ -53702,42 +53722,40 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Header() {
-    const [userNFTIds, setUserIds] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
-    async function getIds() {
-        const userNFTs = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getOwnedNFTs(_index__WEBPACK_IMPORTED_MODULE_2__["default"]);
-        setUserIds(userNFTs);
+    const [userOwnedGallery, setOwnedGallery] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+    async function getNFTs() {
+        const userNFTIds = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getOwnedNFTs(_index__WEBPACK_IMPORTED_MODULE_6__["default"]);
         console.log(userNFTIds);
+        setOwnedGallery(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Gallery__WEBPACK_IMPORTED_MODULE_4__["default"], { title: "My NFTs", ids: userNFTIds }));
     }
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-        getIds();
+        getNFTs();
     }, []);
-    if (userNFTIds != undefined) {
-        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.BrowserRouter, null,
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "app-root-1" },
-                react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", { className: "Paper-root AppBar-root AppBar-positionStatic AppBar-colorPrimary Paper-elevation4" },
-                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "Toolbar-root Toolbar-regular header-appBar-13 Toolbar-gutters" },
-                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "header-left-4" }),
-                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", { className: "header-logo-11", src: _assets_logo_png__WEBPACK_IMPORTED_MODULE_1__["default"] }),
-                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "header-vertical-9" }),
-                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", { className: "Typography-root header-logo-text" }, "OpenD"),
-                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "header-empty-6" }),
-                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "header-space-8" }),
-                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { className: "ButtonBase-root Button-root Button-text header-navButtons-3" },
-                            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, { className: "Button-label", to: "/discover" }, "Discover")),
-                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { className: "ButtonBase-root Button-root Button-text header-navButtons-3" },
-                            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, { className: "Button-label", to: "/minter" }, "Minter")),
-                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { className: "ButtonBase-root Button-root Button-text header-navButtons-3" },
-                            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, { className: "Button-label", to: "/collection" }, "My NFTs"))))),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Switch, null,
-                react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, { path: "/discover" }),
-                react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, { path: "/minter" },
-                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Minter__WEBPACK_IMPORTED_MODULE_4__["default"], null)),
-                react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, { path: "/collection" },
-                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Gallery__WEBPACK_IMPORTED_MODULE_3__["default"], { ids: userNFTIds, title: "My NFTs" })))));
-    }
-    else {
-        return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null);
-    }
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.BrowserRouter, { forceRefresh: true },
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "app-root-1" },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", { className: "Paper-root AppBar-root AppBar-positionStatic AppBar-colorPrimary Paper-elevation4" },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "Toolbar-root Toolbar-regular header-appBar-13 Toolbar-gutters" },
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "header-left-4" }),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", { className: "header-logo-11", src: _assets_logo_png__WEBPACK_IMPORTED_MODULE_1__["default"] }),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "header-vertical-9" }),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, { to: "/" },
+                        react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", { className: "Typography-root header-logo-text" }, "OpenD")),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "header-empty-6" }),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "header-space-8" }),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { className: "ButtonBase-root Button-root Button-text header-navButtons-3" },
+                        react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, { to: "/discover" }, "Discover")),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { className: "ButtonBase-root Button-root Button-text header-navButtons-3" },
+                        react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, { to: "/minter" }, "Minter")),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { className: "ButtonBase-root Button-root Button-text header-navButtons-3" },
+                        react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, { to: "/collection" }, "My NFTs"))))),
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Switch, null,
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { exact: true, path: "/" },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", { className: "bottom-space", src: _assets_home_img_png__WEBPACK_IMPORTED_MODULE_2__["default"] })),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: "/discover" },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Discover")),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: "/minter" },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Minter__WEBPACK_IMPORTED_MODULE_3__["default"], null)),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: "/collection" }, userOwnedGallery))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
 
@@ -53758,7 +53776,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @dfinity/agent */ "./node_modules/@dfinity/agent/lib/esm/index.js");
 /* harmony import */ var _declarations_nft__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../declarations/nft */ "./src/declarations/nft/index.js");
-/* harmony import */ var _dfinity_principal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @dfinity/principal */ "./node_modules/@dfinity/principal/lib/esm/index.js");
+/* harmony import */ var _declarations_opend__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../declarations/opend */ "./src/declarations/opend/index.js");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Button */ "./src/opend_assets/src/components/Button.jsx");
+
 
 
 
@@ -53767,11 +53787,14 @@ function Item(props) {
     const [name, setName] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
     const [owner, setOwner] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
     const [image, setImage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
-    const id = _dfinity_principal__WEBPACK_IMPORTED_MODULE_3__.Principal.fromText(props.id);
+    const [button, setButton] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+    const [priceInput, setPriceInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+    const id = props.id;
     const localHost = "http://localhost:8080/";
     const agent = new _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__.HttpAgent({ host: localHost });
+    let NFTActor;
     async function loadNFT() {
-        const NFTActor = await _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__.Actor.createActor(_declarations_nft__WEBPACK_IMPORTED_MODULE_2__.idlFactory, {
+        NFTActor = await _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__.Actor.createActor(_declarations_nft__WEBPACK_IMPORTED_MODULE_2__.idlFactory, {
             agent,
             canisterId: id,
         });
@@ -53783,10 +53806,27 @@ function Item(props) {
         setName(name);
         setOwner(owner.toText());
         setImage(image);
+        setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], { handleClick: handleSell, text: "Sell" }));
     }
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         loadNFT();
     }, []);
+    let price;
+    function handleSell() {
+        console.log("Sell clicked");
+        setPriceInput(react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", { placeholder: "Price in DANG", type: "number", className: "price-input", value: price, onChange: (e) => (price = e.target.value) }));
+        setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], { handleClick: sellItem, text: "Confirm" }));
+    }
+    async function sellItem() {
+        console.log("set price = " + price);
+        const listingResult = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.listItem(props.id, Number(price));
+        console.log("listing: " + listingResult);
+        if (listingResult == "Success") {
+            const openDId = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.getOpenDCanisterID();
+            const transferResult = await NFTActor.transferOwnership(openDId, true);
+            console.log("transfer: " + transferResult);
+        }
+    }
     return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disGrid-item" },
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disPaper-root disCard-root makeStyles-root-17 disPaper-elevation1 disPaper-rounded" },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", { className: "disCardMedia-root makeStyles-image-19 disCardMedia-media disCardMedia-img", src: image }),
@@ -53796,7 +53836,9 @@ function Item(props) {
                     react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", { className: "purple-text" })),
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", { className: "disTypography-root makeStyles-bodyText-24 disTypography-body2 disTypography-colorTextSecondary" },
                     "Owner: ",
-                    owner)))));
+                    owner),
+                priceInput,
+                button))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Item);
 
@@ -53895,6 +53937,21 @@ const init = async () => {
 };
 init();
 
+
+/***/ }),
+
+/***/ "./src/opend_assets/assets/home-img.png":
+/*!**********************************************!*\
+  !*** ./src/opend_assets/assets/home-img.png ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/png;base64,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");
 
 /***/ }),
 
@@ -54040,6 +54097,7 @@ const idlFactory = ({ IDL }) => {
     'getCanisterId' : IDL.Func([], [IDL.Principal], ['query']),
     'getName' : IDL.Func([], [IDL.Text], ['query']),
     'getOwner' : IDL.Func([], [IDL.Principal], ['query']),
+    'transferOwnership' : IDL.Func([IDL.Principal, IDL.Bool], [IDL.Text], []),
   });
   return NFT;
 };
@@ -54122,11 +54180,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const idlFactory = ({ IDL }) => {
   return IDL.Service({
+    'getOpenDCanisterID' : IDL.Func([], [IDL.Principal], ['query']),
     'getOwnedNFTs' : IDL.Func(
         [IDL.Principal],
         [IDL.Vec(IDL.Principal)],
         ['query'],
       ),
+    'listItem' : IDL.Func([IDL.Principal, IDL.Nat], [IDL.Text], []),
     'mint' : IDL.Func([IDL.Vec(IDL.Nat8), IDL.Text], [IDL.Principal], []),
   });
 };
