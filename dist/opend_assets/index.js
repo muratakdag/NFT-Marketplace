@@ -53676,7 +53676,7 @@ function Gallery(props) {
     const [items, setItems] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
     function fetchNFTs() {
         if (props.ids != undefined) {
-            setItems(props.ids.map((NFTId) => react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Item__WEBPACK_IMPORTED_MODULE_1__["default"], { id: NFTId, key: NFTId.toText() })));
+            setItems(props.ids.map((NFTId) => react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Item__WEBPACK_IMPORTED_MODULE_1__["default"], { id: NFTId, key: NFTId.toText(), role: props.role })));
         }
     }
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -53723,10 +53723,14 @@ __webpack_require__.r(__webpack_exports__);
 
 function Header() {
     const [userOwnedGallery, setOwnedGallery] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+    const [listingGallery, setListingGallery] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
     async function getNFTs() {
         const userNFTIds = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getOwnedNFTs(_index__WEBPACK_IMPORTED_MODULE_6__["default"]);
         console.log(userNFTIds);
-        setOwnedGallery(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Gallery__WEBPACK_IMPORTED_MODULE_4__["default"], { title: "My NFTs", ids: userNFTIds }));
+        setOwnedGallery(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Gallery__WEBPACK_IMPORTED_MODULE_4__["default"], { title: "My NFTs", ids: userNFTIds, role: "collection" }));
+        const listedNFTIds = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getListedNFTs();
+        console.log(listedNFTIds);
+        setListingGallery(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Gallery__WEBPACK_IMPORTED_MODULE_4__["default"], { title: "Discover", ids: listedNFTIds, role: "discover" }));
     }
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         getNFTs();
@@ -53751,8 +53755,7 @@ function Header() {
         react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Switch, null,
             react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { exact: true, path: "/" },
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", { className: "bottom-space", src: _assets_home_img_png__WEBPACK_IMPORTED_MODULE_2__["default"] })),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: "/discover" },
-                react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Discover")),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: "/discover" }, listingGallery),
             react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: "/minter" },
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Minter__WEBPACK_IMPORTED_MODULE_3__["default"], null)),
             react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: "/collection" }, userOwnedGallery))));
@@ -53778,6 +53781,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _declarations_nft__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../declarations/nft */ "./src/declarations/nft/index.js");
 /* harmony import */ var _declarations_opend__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../declarations/opend */ "./src/declarations/opend/index.js");
 /* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Button */ "./src/opend_assets/src/components/Button.jsx");
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../index */ "./src/opend_assets/src/index.jsx");
+/* harmony import */ var _PriceLabel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./PriceLabel */ "./src/opend_assets/src/components/PriceLabel.jsx");
+
+
 
 
 
@@ -53789,9 +53796,15 @@ function Item(props) {
     const [image, setImage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
     const [button, setButton] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
     const [priceInput, setPriceInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+    const [loaderHidden, setLoaderHidden] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
+    const [blur, setBlur] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+    const [sellStatus, setSellStatus] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
+    const [priceLabel, setPriceLabel] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
     const id = props.id;
     const localHost = "http://localhost:8080/";
     const agent = new _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__.HttpAgent({ host: localHost });
+    //TODO: When deploy live, remove the following line.
+    agent.fetchRootKey();
     let NFTActor;
     async function loadNFT() {
         NFTActor = await _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__.Actor.createActor(_declarations_nft__WEBPACK_IMPORTED_MODULE_2__.idlFactory, {
@@ -53806,7 +53819,25 @@ function Item(props) {
         setName(name);
         setOwner(owner.toText());
         setImage(image);
-        setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], { handleClick: handleSell, text: "Sell" }));
+        if (props.role == "collection") {
+            const nftIsListed = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.isListed(props.id);
+            if (nftIsListed) {
+                setOwner("OpenD");
+                setBlur({ filter: "blur(4px)" });
+                setSellStatus("Listed");
+            }
+            else {
+                setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], { handleClick: handleSell, text: "Sell" }));
+            }
+        }
+        else if (props.role == "discover") {
+            const originalOwner = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.getOriginalOwner(props.id);
+            if (originalOwner.toText() != _index__WEBPACK_IMPORTED_MODULE_5__["default"].toText()) {
+                setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], { handleClick: handleBuy, text: "Buy" }));
+            }
+            const price = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.getListedNFTPrice(props.id);
+            setPriceLabel(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PriceLabel__WEBPACK_IMPORTED_MODULE_6__["default"], { sellPrice: price.toString() }));
+        }
     }
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         loadNFT();
@@ -53818,22 +53849,42 @@ function Item(props) {
         setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], { handleClick: sellItem, text: "Confirm" }));
     }
     async function sellItem() {
+        setBlur({ filter: "blur(4px)" });
+        setLoaderHidden(false);
         console.log("set price = " + price);
         const listingResult = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.listItem(props.id, Number(price));
         console.log("listing: " + listingResult);
         if (listingResult == "Success") {
             const openDId = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.getOpenDCanisterID();
-            const transferResult = await NFTActor.transferOwnership(openDId, true);
+            const transferResult = await NFTActor.transferOwnership(openDId);
             console.log("transfer: " + transferResult);
+            if (transferResult == "Success") {
+                setLoaderHidden(true);
+                setButton();
+                setPriceInput();
+                setOwner("OpenD");
+                setSellStatus("Listed");
+            }
         }
+    }
+    async function handleBuy() {
+        console.log("Buy was triggered");
     }
     return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disGrid-item" },
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disPaper-root disCard-root makeStyles-root-17 disPaper-elevation1 disPaper-rounded" },
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", { className: "disCardMedia-root makeStyles-image-19 disCardMedia-media disCardMedia-img", src: image }),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", { className: "disCardMedia-root makeStyles-image-19 disCardMedia-media disCardMedia-img", src: image, style: blur }),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "lds-ellipsis", hidden: loaderHidden },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null)),
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disCardContent-root" },
+                priceLabel,
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", { className: "disTypography-root makeStyles-bodyText-24 disTypography-h5 disTypography-gutterBottom" },
                     name,
-                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", { className: "purple-text" })),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", { className: "purple-text" },
+                        " ",
+                        sellStatus)),
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", { className: "disTypography-root makeStyles-bodyText-24 disTypography-body2 disTypography-colorTextSecondary" },
                     "Owner: ",
                     owner),
@@ -53907,6 +53958,30 @@ function Minter() {
     }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Minter);
+
+
+/***/ }),
+
+/***/ "./src/opend_assets/src/components/PriceLabel.jsx":
+/*!********************************************************!*\
+  !*** ./src/opend_assets/src/components/PriceLabel.jsx ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+function PriceLabel(props) {
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disButtonBase-root disChip-root makeStyles-price-23 disChip-outlined" },
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", { className: "disChip-label" },
+            props.sellPrice,
+            " DANG")));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PriceLabel);
 
 
 /***/ }),
@@ -54097,7 +54172,7 @@ const idlFactory = ({ IDL }) => {
     'getCanisterId' : IDL.Func([], [IDL.Principal], ['query']),
     'getName' : IDL.Func([], [IDL.Text], ['query']),
     'getOwner' : IDL.Func([], [IDL.Principal], ['query']),
-    'transferOwnership' : IDL.Func([IDL.Principal, IDL.Bool], [IDL.Text], []),
+    'transferOwnership' : IDL.Func([IDL.Principal], [IDL.Text], []),
   });
   return NFT;
 };
@@ -54180,12 +54255,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const idlFactory = ({ IDL }) => {
   return IDL.Service({
+    'getListedNFTPrice' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
+    'getListedNFTs' : IDL.Func([], [IDL.Vec(IDL.Principal)], ['query']),
     'getOpenDCanisterID' : IDL.Func([], [IDL.Principal], ['query']),
+    'getOriginalOwner' : IDL.Func([IDL.Principal], [IDL.Principal], ['query']),
     'getOwnedNFTs' : IDL.Func(
         [IDL.Principal],
         [IDL.Vec(IDL.Principal)],
         ['query'],
       ),
+    'isListed' : IDL.Func([IDL.Principal], [IDL.Bool], ['query']),
     'listItem' : IDL.Func([IDL.Principal, IDL.Nat], [IDL.Text], []),
     'mint' : IDL.Func([IDL.Vec(IDL.Nat8), IDL.Text], [IDL.Principal], []),
   });
