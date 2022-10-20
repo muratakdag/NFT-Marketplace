@@ -108,7 +108,7 @@ actor OpenD {
 
       return listing.itemPrice;
 
-    }
+    };
 
-
+    
 };
