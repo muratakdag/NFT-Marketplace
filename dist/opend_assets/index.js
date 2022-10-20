@@ -53676,7 +53676,7 @@ function Gallery(props) {
     const [items, setItems] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
     function fetchNFTs() {
         if (props.ids != undefined) {
-            setItems(props.ids.map((NFTId) => react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Item__WEBPACK_IMPORTED_MODULE_1__["default"], { id: NFTId, key: NFTId.toText(), role: props.role })));
+            setItems(props.ids.map((NFTId) => (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Item__WEBPACK_IMPORTED_MODULE_1__["default"], { id: NFTId, key: NFTId.toText(), role: props.role }))));
         }
     }
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -53779,10 +53779,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @dfinity/agent */ "./node_modules/@dfinity/agent/lib/esm/index.js");
 /* harmony import */ var _declarations_nft__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../declarations/nft */ "./src/declarations/nft/index.js");
-/* harmony import */ var _declarations_opend__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../declarations/opend */ "./src/declarations/opend/index.js");
-/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Button */ "./src/opend_assets/src/components/Button.jsx");
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../index */ "./src/opend_assets/src/index.jsx");
-/* harmony import */ var _PriceLabel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./PriceLabel */ "./src/opend_assets/src/components/PriceLabel.jsx");
+/* harmony import */ var _declarations_token__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../declarations/token */ "./src/declarations/token/index.js");
+/* harmony import */ var _dfinity_principal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @dfinity/principal */ "./node_modules/@dfinity/principal/lib/esm/index.js");
+/* harmony import */ var _declarations_opend__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../declarations/opend */ "./src/declarations/opend/index.js");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Button */ "./src/opend_assets/src/components/Button.jsx");
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../index */ "./src/opend_assets/src/index.jsx");
+/* harmony import */ var _PriceLabel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./PriceLabel */ "./src/opend_assets/src/components/PriceLabel.jsx");
+
+
 
 
 
@@ -53800,6 +53804,7 @@ function Item(props) {
     const [blur, setBlur] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
     const [sellStatus, setSellStatus] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
     const [priceLabel, setPriceLabel] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+    const [shouldDisplay, setDisplay] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
     const id = props.id;
     const localHost = "http://localhost:8080/";
     const agent = new _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__.HttpAgent({ host: localHost });
@@ -53820,23 +53825,23 @@ function Item(props) {
         setOwner(owner.toText());
         setImage(image);
         if (props.role == "collection") {
-            const nftIsListed = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.isListed(props.id);
+            const nftIsListed = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.isListed(props.id);
             if (nftIsListed) {
                 setOwner("OpenD");
                 setBlur({ filter: "blur(4px)" });
                 setSellStatus("Listed");
             }
             else {
-                setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], { handleClick: handleSell, text: "Sell" }));
+                setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_6__["default"], { handleClick: handleSell, text: "Sell" }));
             }
         }
         else if (props.role == "discover") {
-            const originalOwner = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.getOriginalOwner(props.id);
-            if (originalOwner.toText() != _index__WEBPACK_IMPORTED_MODULE_5__["default"].toText()) {
-                setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], { handleClick: handleBuy, text: "Buy" }));
+            const originalOwner = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getOriginalOwner(props.id);
+            if (originalOwner.toText() != _index__WEBPACK_IMPORTED_MODULE_7__["default"].toText()) {
+                setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_6__["default"], { handleClick: handleBuy, text: "Buy" }));
             }
-            const price = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.getListedNFTPrice(props.id);
-            setPriceLabel(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PriceLabel__WEBPACK_IMPORTED_MODULE_6__["default"], { sellPrice: price.toString() }));
+            const price = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getListedNFTPrice(props.id);
+            setPriceLabel(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PriceLabel__WEBPACK_IMPORTED_MODULE_8__["default"], { sellPrice: price.toString() }));
         }
     }
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -53846,31 +53851,36 @@ function Item(props) {
     function handleSell() {
         console.log("Sell clicked");
         setPriceInput(react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", { placeholder: "Price in DANG", type: "number", className: "price-input", value: price, onChange: (e) => (price = e.target.value) }));
-        setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], { handleClick: sellItem, text: "Confirm" }));
+        setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_6__["default"], { handleClick: sellItem, text: "Confirm" }));
     }
     async function sellItem() {
-        setBlur({ filter: "blur(4px)" });
-        setLoaderHidden(false);
         console.log("set price = " + price);
-        const listingResult = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.listItem(props.id, Number(price));
+        const listingResult = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.listItem(props.id, Number(price));
         console.log("listing: " + listingResult);
         if (listingResult == "Success") {
-            const openDId = await _declarations_opend__WEBPACK_IMPORTED_MODULE_3__.opend.getOpenDCanisterID();
+            const openDId = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getOpenDCanisterID();
             const transferResult = await NFTActor.transferOwnership(openDId);
             console.log("transfer: " + transferResult);
-            if (transferResult == "Success") {
-                setLoaderHidden(true);
-                setButton();
-                setPriceInput();
-                setOwner("OpenD");
-                setSellStatus("Listed");
-            }
         }
     }
     async function handleBuy() {
         console.log("Buy was triggered");
+        setLoaderHidden(false);
+        const tokenActor = await _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__.Actor.createActor(_declarations_token__WEBPACK_IMPORTED_MODULE_3__.idlFactory, {
+            agent,
+            canisterId: _dfinity_principal__WEBPACK_IMPORTED_MODULE_4__.Principal.fromText("<REPLACE WITH YOUR TOKEN CANISTER ID>"),
+        });
+        const sellerId = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getOriginalOwner(props.id);
+        const itemPrice = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getListedNFTPrice(props.id);
+        const result = await tokenActor.transfer(sellerId, itemPrice);
+        if (result == "Success") {
+            const transferResult = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.completePurchase(props.id, sellerId, _index__WEBPACK_IMPORTED_MODULE_7__["default"]);
+            console.log("purchase: " + transferResult);
+            setLoaderHidden(true);
+            setDisplay(false);
+        }
     }
-    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disGrid-item" },
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { style: { display: shouldDisplay ? "inline" : "none" }, className: "disGrid-item" },
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disPaper-root disCard-root makeStyles-root-17 disPaper-elevation1 disPaper-rounded" },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", { className: "disCardMedia-root makeStyles-image-19 disCardMedia-media disCardMedia-img", src: image, style: blur }),
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "lds-ellipsis", hidden: loaderHidden },
@@ -54255,6 +54265,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const idlFactory = ({ IDL }) => {
   return IDL.Service({
+    'completePurchase' : IDL.Func(
+        [IDL.Principal, IDL.Principal, IDL.Principal],
+        [IDL.Text],
+        [],
+      ),
     'getListedNFTPrice' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
     'getListedNFTs' : IDL.Func([], [IDL.Vec(IDL.Principal)], ['query']),
     'getOpenDCanisterID' : IDL.Func([], [IDL.Principal], ['query']),
@@ -54267,6 +54282,90 @@ const idlFactory = ({ IDL }) => {
     'isListed' : IDL.Func([IDL.Principal], [IDL.Bool], ['query']),
     'listItem' : IDL.Func([IDL.Principal, IDL.Nat], [IDL.Text], []),
     'mint' : IDL.Func([IDL.Vec(IDL.Nat8), IDL.Text], [IDL.Principal], []),
+  });
+};
+const init = ({ IDL }) => { return []; };
+
+
+/***/ }),
+
+/***/ "./src/declarations/token/index.js":
+/*!*****************************************!*\
+  !*** ./src/declarations/token/index.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "idlFactory": () => (/* reexport safe */ _token_did_js__WEBPACK_IMPORTED_MODULE_1__.idlFactory),
+/* harmony export */   "canisterId": () => (/* binding */ canisterId),
+/* harmony export */   "createActor": () => (/* binding */ createActor),
+/* harmony export */   "token": () => (/* binding */ token)
+/* harmony export */ });
+/* harmony import */ var _dfinity_agent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @dfinity/agent */ "./node_modules/@dfinity/agent/lib/esm/index.js");
+/* harmony import */ var _token_did_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./token.did.js */ "./src/declarations/token/token.did.js");
+/* provided dependency */ var process = __webpack_require__(/*! ./node_modules/process/browser.js */ "./node_modules/process/browser.js");
+
+
+// Imports and re-exports candid interface
+
+
+// CANISTER_ID is replaced by webpack based on node environment
+const canisterId = process.env.TOKEN_CANISTER_ID;
+
+/**
+ * 
+ * @param {string | import("@dfinity/principal").Principal} canisterId Canister ID of Agent
+ * @param {{agentOptions?: import("@dfinity/agent").HttpAgentOptions; actorOptions?: import("@dfinity/agent").ActorConfig}} [options]
+ * @return {import("@dfinity/agent").ActorSubclass<import("./token.did.js")._SERVICE>}
+ */
+ const createActor = (canisterId, options) => {
+  const agent = new _dfinity_agent__WEBPACK_IMPORTED_MODULE_0__.HttpAgent({ ...options?.agentOptions });
+  
+  // Fetch root key for certificate validation during development
+  if(true) {
+    agent.fetchRootKey().catch(err=>{
+      console.warn("Unable to fetch root key. Check to ensure that your local replica is running");
+      console.error(err);
+    });
+  }
+
+  // Creates an actor with using the candid interface and the HttpAgent
+  return _dfinity_agent__WEBPACK_IMPORTED_MODULE_0__.Actor.createActor(_token_did_js__WEBPACK_IMPORTED_MODULE_1__.idlFactory, {
+    agent,
+    canisterId,
+    ...options?.actorOptions,
+  });
+};
+  
+/**
+ * A ready-to-use agent for the token canister
+ * @type {import("@dfinity/agent").ActorSubclass<import("./token.did.js")._SERVICE>}
+ */
+ const token = createActor(canisterId);
+
+
+/***/ }),
+
+/***/ "./src/declarations/token/token.did.js":
+/*!*********************************************!*\
+  !*** ./src/declarations/token/token.did.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "idlFactory": () => (/* binding */ idlFactory),
+/* harmony export */   "init": () => (/* binding */ init)
+/* harmony export */ });
+const idlFactory = ({ IDL }) => {
+  return IDL.Service({
+    'balanceOf' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
+    'getSymbol' : IDL.Func([], [IDL.Text], ['query']),
+    'payOut' : IDL.Func([], [IDL.Text], []),
+    'transfer' : IDL.Func([IDL.Principal, IDL.Nat], [IDL.Text], []),
   });
 };
 const init = ({ IDL }) => { return []; };
