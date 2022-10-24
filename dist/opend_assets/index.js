@@ -53804,7 +53804,6 @@ function Item(props) {
     const [blur, setBlur] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
     const [sellStatus, setSellStatus] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
     const [priceLabel, setPriceLabel] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
-    const [shouldDisplay, setDisplay] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
     const id = props.id;
     const localHost = "http://localhost:8080/";
     const agent = new _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__.HttpAgent({ host: localHost });
@@ -53854,6 +53853,8 @@ function Item(props) {
         setButton(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Button__WEBPACK_IMPORTED_MODULE_6__["default"], { handleClick: sellItem, text: "Confirm" }));
     }
     async function sellItem() {
+        setBlur({ filter: "blur(4px)" });
+        setLoaderHidden(false);
         console.log("set price = " + price);
         const listingResult = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.listItem(props.id, Number(price));
         console.log("listing: " + listingResult);
@@ -53861,26 +53862,30 @@ function Item(props) {
             const openDId = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getOpenDCanisterID();
             const transferResult = await NFTActor.transferOwnership(openDId);
             console.log("transfer: " + transferResult);
+            if (transferResult == "Success") {
+                setLoaderHidden(true);
+                setButton();
+                setPriceInput();
+                setOwner("OpenD");
+                setSellStatus("Listed");
+            }
         }
     }
     async function handleBuy() {
         console.log("Buy was triggered");
-        setLoaderHidden(false);
         const tokenActor = await _dfinity_agent__WEBPACK_IMPORTED_MODULE_1__.Actor.createActor(_declarations_token__WEBPACK_IMPORTED_MODULE_3__.idlFactory, {
             agent,
-            canisterId: _dfinity_principal__WEBPACK_IMPORTED_MODULE_4__.Principal.fromText("<REPLACE WITH YOUR TOKEN CANISTER ID>"),
+            canisterId: _dfinity_principal__WEBPACK_IMPORTED_MODULE_4__.Principal.fromText("rdmx6-jaaaa-aaaaa-aaadq-cai"),
         });
         const sellerId = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getOriginalOwner(props.id);
         const itemPrice = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.getListedNFTPrice(props.id);
         const result = await tokenActor.transfer(sellerId, itemPrice);
         if (result == "Success") {
-            const transferResult = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.completePurchase(props.id, sellerId, _index__WEBPACK_IMPORTED_MODULE_7__["default"]);
+            const transferResult = await _declarations_opend__WEBPACK_IMPORTED_MODULE_5__.opend.completePurchase(prpos.id, sellerId, _index__WEBPACK_IMPORTED_MODULE_7__["default"]);
             console.log("purchase: " + transferResult);
-            setLoaderHidden(true);
-            setDisplay(false);
         }
     }
-    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { style: { display: shouldDisplay ? "inline" : "none" }, className: "disGrid-item" },
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disGrid-item" },
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "disPaper-root disCard-root makeStyles-root-17 disPaper-elevation1 disPaper-rounded" },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", { className: "disCardMedia-root makeStyles-image-19 disCardMedia-media disCardMedia-img", src: image, style: blur }),
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "lds-ellipsis", hidden: loaderHidden },
